@@ -42,27 +42,6 @@ The project follows a structured approach with the following main components:
 - test.parser
   - Unit tests for the parser
 
-## Examples
-
-- `123`: Represents a positive constant expression.
-- `(-123)`: Represents a negative constant expression.
-- `(-123 + 45)`: Represents a binary expression with addition.
-- `(-123 + (45 * 6))`: Represents a nested binary expression with addition and multiplication.
-- `(-123 + (element * 6))`: Represents a binary expression with an element placeholder.
-
-## Contributing
-
-Contributions are welcome! If you have any suggestions, improvements, or bug fixes, feel free to open an issue or create a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to adjust and expand this README according to your project's specific needs and structure.
-
-
 ## Usage
 
 To use the parser, simply instantiate an `ArithmeticParser` object with the arithmetic expression as input, then call the `parse()` method:
