@@ -27,9 +27,9 @@ data class LexicalElement(val type: LexicalType, val value: Any)
 
 sealed class Operation
 
-data class AddOperation(val operator: Char = '+'): Operation()
-data class SubOperation(val operator: Char = '-'): Operation()
-data class MultiplyOperation(val operator: Char = '*'): Operation()
+data class AddOperation(val operator: String = "+"): Operation()
+data class SubOperation(val operator: String = "-"): Operation()
+data class MultiplyOperation(val operator: String = "*"): Operation()
 
 // Integer number
 

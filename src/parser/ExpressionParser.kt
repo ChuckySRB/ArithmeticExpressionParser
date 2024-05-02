@@ -8,7 +8,7 @@ class ArithmeticParser(private val input: String) {
     fun parse(): Expression {
         val expression = parseExpression()
         if (index < input.length) {
-            throw SyntaxAnalysesException(index, input[index], "")
+            throw SyntaxAnalysesException(index, input[index] + "", "")
         }
         return expression
     }
@@ -25,10 +25,11 @@ class ArithmeticParser(private val input: String) {
                 val operation = parseOperation()
                 val right = parseExpression()
 
+                val curIndex = index
                 val nextElement: LexicalElement = parseLexicalElement()
                 // Check if the parentheses are closed
                 if (nextElement.type != LexicalType.RIGHT_PARENTHESES) {
-                    throw SyntaxAnalysesException(index, input[index], ")")
+                    throw SyntaxAnalysesException(curIndex, nextElement.value as String, ")")
                 }
                 // Return Expression
                 BinaryExpression(left, operation, right)
@@ -38,7 +39,7 @@ class ArithmeticParser(private val input: String) {
                 // Get the Number Behind the Minus Sign
                 val number: LexicalElement = parseLexicalElement()
                 if (number.type != LexicalType.INTEGER) {
-                    throw SyntaxAnalysesException(index, input[index], "Integer number")
+                    throw SyntaxAnalysesException(index, number.value as String, "Integer number")
                 }
                 // Return Expression
                 NegativeConstantExpression(number.value as Number)
@@ -50,7 +51,7 @@ class ArithmeticParser(private val input: String) {
             LexicalType.ELEMENT -> ElementPlaceholder()
 
             // Syntax error
-            else -> throw SyntaxAnalysesException(index, input[index], "")
+            else -> throw SyntaxAnalysesException(index, element.value as String, "")
          }
     }
 
@@ -58,32 +59,32 @@ class ArithmeticParser(private val input: String) {
     private fun parseLexicalElement(): LexicalElement{
         skipWhitespace()
         if (index >= input.length)
-            throw SyntaxAnalysesException(index, ' ', "")
+            throw SyntaxAnalysesException(index, " ", "")
         return when {
             input[index] == '(' -> {
                 index++
-                LexicalElement(LexicalType.LEFT_PARENTHESES, '(')
+                LexicalElement(LexicalType.LEFT_PARENTHESES, "(")
             }
             input[index] == ')' -> {
                 index++
-                LexicalElement(LexicalType.RIGHT_PARENTHESES, ')')
+                LexicalElement(LexicalType.RIGHT_PARENTHESES, ")")
             }
             input[index] == '+' -> {
                 index++
-                LexicalElement(LexicalType.PLUS, '+')
+                LexicalElement(LexicalType.PLUS, "+")
             }input[index] == '-' -> {
                 index++
-                LexicalElement(LexicalType.MINUS, '-')
+                LexicalElement(LexicalType.MINUS, "-")
             }input[index] == '*' -> {
                 index++
-                LexicalElement(LexicalType.MULTIPLY, '*')
+                LexicalElement(LexicalType.MULTIPLY, "*")
             }
             input[index].isDigit() -> LexicalElement(LexicalType.INTEGER, value = parseNumber())
             input.startsWith("element", index) -> {
                 index += "element".length
                 LexicalElement(LexicalType.ELEMENT, "element")
             }
-            else -> throw LexicalAnalysesException(index = index, character = input[index], expected = LexicalType.entries.toString())
+            else -> throw LexicalAnalysesException(index = index, element = input[index] + "", expected = LexicalType.entries.toString())
         }
     }
 
@@ -103,7 +104,7 @@ class ArithmeticParser(private val input: String) {
             LexicalType.PLUS -> AddOperation()
             LexicalType.MINUS -> SubOperation()
             LexicalType.MULTIPLY -> MultiplyOperation()
-            else -> throw SyntaxAnalysesException(index = index, character = input[index], expected = "Operator!")
+            else -> throw SyntaxAnalysesException(index = index, element = operator.value as String, expected = "Operator!")
         }
     }
 
